@@ -1,0 +1,39 @@
+---
+title: "Twitter Search"
+author: "Charles Lang"
+date: "February 3, 2016"
+output: html_document
+---
+#Set OAuth
+```{r}
+api_key <- "WSUiTcfEhw6cosz25uqrIMXjr"
+
+api_secret <- "aflphctsNQgltOGupbZmd4GAmdUnhIkJkeAFcp570J3m53sUfn"
+
+access_token <- "325558736-aAvV8qFqXJiWvghqdo5HB8Kbz7RboIMACaF13TVk"
+
+access_token_secret <- "kbroUsysVDawjC3xrXJKXpBan3jdPLO0fHmj48ByL4n6h"
+
+setup_twitter_oauth(api_key, api_secret, access_token, access_token_secret)
+```
+#Download Tweets
+```{r}
+T1 <- searchTwitter("#DSE16")
+T1 <- do.call("rbind", lapply(T1, as.data.frame))
+```
+#Plot tweets
+```{r}
+counts=table(T1$screenName)
+
+T1$counts <- 1
+
+barplot(counts, las=2)
+plot(T1$counts ~ T1$created)
+
+
+h.str <- as.numeric(format(T1$created, "%d"))
+
+plot(T1$counts ~ h.str)
+hist(T1$created, breaks = "h")
+```
+
