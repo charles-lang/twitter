@@ -6,6 +6,9 @@ output: html_document
 ---
 #Set OAuth
 ```{r}
+library(ROAuth)
+library(twitteR)
+
 api_key <- "WSUiTcfEhw6cosz25uqrIMXjr"
 
 api_secret <- "aflphctsNQgltOGupbZmd4GAmdUnhIkJkeAFcp570J3m53sUfn"
@@ -23,17 +26,23 @@ T1 <- do.call("rbind", lapply(T1, as.data.frame))
 ```
 #Plot tweets
 ```{r}
-counts=table(T1$screenName)
-
-T1$counts <- 1
-
+#By name
+counts=table(Tmerge$screenName)
 barplot(counts, las=2)
-plot(T1$counts ~ T1$created)
 
+#By time of day
+hist(Tmerge$created, breaks = "d")
+```
+#Save file
+```{r}
+write.table(T1, "/Users/cwmlang_old/Desktop/Twitter_2-10-16.csv", sep = ",")
+```
+#Merge old-new file
+```{r}
+T2 <- read.table("/Users/cwmlang_old/Documents/NYU/EDCT2550/Github/Class-Data/Twitter_2-3-16.csv", sep = ",", header = TRUE)
 
-h.str <- as.numeric(format(T1$created, "%d"))
+Tmerge <- rbind(T1, T2)
+Tmerge <- unique(Tmerge)
 
-plot(T1$counts ~ h.str)
-hist(T1$created, breaks = "h")
 ```
 
